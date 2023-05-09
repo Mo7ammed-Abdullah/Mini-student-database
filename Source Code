@@ -13,7 +13,7 @@ struct student_data std[100];
 void readdata(){
     int i;
 FILE *fp;
-fp = fopen("codeblocks.txt" ,"r" );
+fp = fopen("studentdata.txt" ,"r" );
     if(fp==0){
         printf("file unavailable");
         return 0;
@@ -32,7 +32,7 @@ fclose(fp);
 void writedata(){
     int i ;
     FILE *fp;
-    fp = fopen("codeblocks.txt" , "w");
+    fp = fopen("studentdata.txt" , "w");
     fprintf(fp , "%d\n" , n);
 
     for(i=0 ; i<n ; i++){
