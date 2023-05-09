@@ -1,0 +1,212 @@
+#include<stdio.h>
+#include<string.h>
+
+struct student_data {
+    char name[100];
+    int roll , sem;
+  double cgpa;
+};
+
+int n;
+struct student_data std[100];
+//read function-------------------------
+void readdata(){
+    int i;
+FILE *fp;
+fp = fopen("codeblocks.txt" ,"r" );
+    if(fp==0){
+        printf("file unavailable");
+        return 0;
+    }
+fscanf(fp , "%d" , &n);
+
+    for(i=0 ; i<n ; i++){
+        fscanf(fp , "%d" ,&std[i].roll );
+        fscanf(fp , "%s" ,std[i].name );
+        fscanf(fp , "%lf" ,&std[i].cgpa );
+         fscanf(fp , "%d" ,&std[i].sem );
+    }
+fclose(fp);
+}
+//write function---------------------------
+void writedata(){
+    int i ;
+    FILE *fp;
+    fp = fopen("codeblocks.txt" , "w");
+    fprintf(fp , "%d\n" , n);
+
+    for(i=0 ; i<n ; i++){
+        fprintf(fp , "%d\n" ,std[i].roll );
+        fprintf(fp , "%s\n" ,std[i].name );
+        fprintf(fp , "%.2lf\n" ,std[i].cgpa );
+         fprintf(fp , "%d\n" , std[i].sem );
+    }
+fclose(fp);
+}
+//show function------------------------
+
+void show(){
+    int i;
+    readdata();
+    printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n");
+    printf("TOTAL STUDENTS: ");
+printf( "%d\n\n" , n);
+
+    for(i=0 ; i<n ; i++){
+        printf("STUDENT: %d\n" , i+1);
+         printf("Student Roll: ");
+        printf( "%d\n" ,std[i].roll );
+         printf("Student Name: ");
+        printf( "%s\n" ,std[i].name );
+        printf("Student CGPA: ");
+        printf( "%.2lf\n" ,std[i].cgpa );
+        printf("Student Semester: ");
+        printf ("%d\n" , std[i].sem );
+        printf("\n");
+    }
+    printf("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n\n");
+}
+//----------------------------------------------
+
+int main(){
+    int i , qry , roll, sem , f=0 , L1, L2  ;
+    double cgpa ;
+    int a , pos;
+    int yes_no, yes_no_create;
+
+    printf("\n    *************************************************************\n");
+    printf("    *                                                           *\n");
+    printf("    *                  < STUDENT DATABASE >                     *\n");
+    printf("    *                                                           *\n");
+    printf("    *                                                           *\n");
+    printf("    *  1. Show All Student info                                 *\n");
+    printf("    *  2. Update                                                *\n");
+    printf("    *  3. Delete                                                *\n");
+    printf("    *  4. ADD                                                   *\n");
+    printf("    *                                                           *\n");
+    printf("    *                                                           *\n");
+    printf("    *************************************************************\n");
+    printf("\n\nSelect any one\n");
+    scanf("%d" , &qry);
+///Shows all  students*********************
+if(qry==1){
+        show();
+        if(n==0){
+            printf("\nDO YOU WANT TO ADD STUDENT?\n press 1 (YES)\n press 2 (NO)\n");
+            scanf("%d", &yes_no);
+            if(yes_no==1){
+                goto L2;
+            }
+            else{
+                return 0;
+            }
+        }
+    }
+// Updates any information from a student ***********************
+if(qry==2){
+        show();
+            readdata();
+            printf("DO YOU WANT TO\n\n      1)  update cgpa\n      2)  update semester\n");
+            scanf("%d" , &a);
+            if(a ==1 ){
+                printf("Enter roll\n");
+                    scanf("%d" , &roll);
+                    printf("Enter NEW CGPA\n");
+                    scanf("%lf" , &cgpa);
+                    for(i=0 ; i<n ;i++){
+                            if(std[i].roll==roll){
+                                std[i].cgpa=cgpa;
+                            }
+
+
+                    }
+                            writedata();
+                            show();
+                            printf("            UPDATED SUCCESSFULLY ^_^\n");
+            }
+           else if(a==2){
+                printf("Enter roll\n");
+                    scanf("%d" ,&roll );
+                    printf("Enter NEW semester\n");
+                    scanf("%d" , &sem);
+                    for(i=0 ; i<n ;i++){
+                            if(std[i].roll==roll){
+                                std[i].sem=sem;
+                            }
+                    }
+                 writedata();
+                 show();
+                printf("            UPDATED SUCCESSFULLY ^_^\n");
+            }
+
+
+
+        }
+/// deletes choosen student data***********************
+if(qry==3){
+    show();
+            readdata();
+            printf("ENTER STUDENT ROLL NUMBER TO DELETE INFORMATION \n");
+            scanf("%d" , &roll);
+            for(i=0 ; i<n ;i++){
+                    if(std[i].roll==roll){
+                        f=1;
+                    }
+            }
+            if(f==0){
+                printf("        MATCH NOT FOUND!!\n");
+                goto L1;
+            }
+            for(i=0 ; i<n ; i++){
+                if(std[i].roll==roll){
+                    pos=i;
+
+                }
+
+            }
+            for(i=pos; i<n-1 ; i++){
+                std[i]=std[i+1];
+
+            }
+            n--;
+            writedata();
+                L1:
+            show();
+            printf("            DELETION SUCCESSFUL ^_^\n");
+}
+///adds a new student data*************************
+if(qry==4){
+    L2:
+           readdata();
+           printf("Enter NEW STUDENT INFORMATION\n");
+            for(i=0 ; i<20 ; i++){
+                if(i>0){
+                    printf("         Do You Want To Add More?\n             press 1 (YES)\n             press 2 (NO)\n");
+                    scanf("%d" , &yes_no_create);
+                }
+                if(yes_no_create == 2){
+
+                    break;
+                }
+
+                printf("Enter Roll: ");
+                 scanf("%d" ,&std[n].roll );
+                 printf("Enter Name: ");
+                scanf("%s" ,std[n].name );
+                printf("Enter CGPA: ");
+                scanf("%lf" ,&std[n].cgpa );
+                printf("Enter Semester: ");
+                scanf("%d" ,&std[n].sem );
+                n++;
+
+            }
+            writedata();
+            show();
+
+            printf("\n         DATA ENTRY SUCCESSFUL ^_^\n");
+            }
+
+printf("\n\n\n\n\n");
+
+    return 0;
+}
